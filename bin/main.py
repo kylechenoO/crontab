@@ -207,7 +207,12 @@ def run_cmd(username, command):
     command=re.sub(r"\"","\\\"", command);
     cmd="su - " + username + " -c \" " + command + "\"";
     kglobal.prt_dbg("cmd", cmd, DEBUG_PRT);
-    os.system(cmd);
+    try:
+        os.system(cmd);
+    except Exception, e:
+        sys.stderr.write(e);
+        sys.stderr.flush();
+        return(False);
 
     return(True);
 
