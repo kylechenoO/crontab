@@ -22,3 +22,4 @@ import logging;
 #os.remove("./tt");
 #logging.warning("WARNING");
 #logging.info("INFO");
+os.popen("");

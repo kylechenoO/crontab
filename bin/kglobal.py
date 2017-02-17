@@ -2,10 +2,12 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170216v1
+## Version 20170217v1
 ## Note:
-##  Add
-##      get_systime();  #to get the system time
+##  add logging modules
+##  add log level configure
+##  add get_pidlist func to get main pid
+##  fix lock bug
 ###############################################################################
 #!/usr/bin/env python
 
@@ -173,10 +175,7 @@ def lock_write(fp_lock, key):
     fp=open(fp_lock, "w");
     fp.write(str(key));
     fp.close();
-    if lock_init(fp_lock) == key:
-        return(True);
-    else:
-        return(False);
+    return(True);
 
 ##lock_set
 ##set lock status
@@ -184,9 +183,9 @@ def lock_set(lock_stat):
     if (lock_stat == "") or (int(lock_stat) == LOCK_US):
         return(LOCK_ST);
     else:
-        sys.stderr.write("LOCK EXIST.!");
-        sys.stderr.flush();
-        return(False);
+        sys.stdout.write("LOCK EXIST.!");
+        sys.stdout.flush();
+        return(LOCK_ST);
 
 ##lock_unset
 ##unset lock status
@@ -207,3 +206,14 @@ def log_msg(fp_log , log_level, msg_level, msg):
     else:
         logging.debug(str(msg));
     return(True);
+
+##get_pidlst
+##get the proc pid list
+def get_pidlst(proc):
+    rlst=[];
+    result="";
+    rlst=os.popen("ps aux | awk '/%s$/{ printf(\"%%s \", $2); }'" % (proc));
+    result=('').join(rlst);
+    result=re.sub(r"\n","",result);
+    rlst.close();
+    return(result);

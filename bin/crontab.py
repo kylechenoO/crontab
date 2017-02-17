@@ -1,15 +1,12 @@
 ###############################################################################
-## Main.Py
+## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170216v1
+## Version 20170217v1
 ## Note:
-##  Add
-##      cron_init();        #initial crontab cfgs
-##      cron_destroy();     #to release some mem
-##      run_cron();         #start run crontab commands
-##      run();              #to start this script
-##      time_cmp();         #to cmp times
+##  logging funcs from kglobal
+##  use multiprocessing to get out of waiting process
+##  fix lock bug
 ###############################################################################
 #!/usr/bin/env python
 
@@ -21,6 +18,7 @@ import os;
 import time;
 import gc;
 import logging;
+import multiprocessing;
 
 ##init kglobal values
 WORK_PTH=kglobal.get_wpth();
@@ -204,7 +202,9 @@ def run_cron():
     while linenum < CRON_LINENUM:
 
         if (time_cmp(MIN_LIST[linenum], MIN_NOW)) and (time_cmp(HOUR_LIST[linenum], HOUR_NOW)) and (time_cmp(DAY_LIST[linenum], DAY_NOW)) and (time_cmp(MONTH_LIST[linenum], MONTH_NOW)) and (time_cmp(WEEK_LIST[linenum], WEEK_NOW)):
-            run_cmd(USR_LIST[linenum], COMM_LIST[linenum]);
+            ppr = multiprocessing.Process(target = run_cmd, args = (USR_LIST[linenum], COMM_LIST[linenum]));
+            ppr.start();
+            kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[" + str(ppr.pid) + "][" + str(ppr.name) + "][" + str(ppr.is_alive()) + "]");
 
         linenum+=1;
 
@@ -219,15 +219,17 @@ def run_cmd(username, command):
     ret=0;
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Running Command");
     command=re.sub(r"\"","\\\"", command);
-    cmd="su - " + username + " -c \" " + command + "\" 2>&1";
+    cmd="su - " + username + " -c \"" + command + "\" &";
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[CMD] " + cmd);
     kglobal.prt_dbg("cmd", cmd, DEBUG_PRT);
-    rlst=os.popen(cmd);
-    result=('').join(rlst);
-    result=re.sub(r"\n","",result);
-    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[RUN] " + result);
-    rlst.close();
-    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Run Command Done");
+    #rlst=os.popen(cmd);
+    #result=('').join(rlst);
+    #result=re.sub(r"\n","",result);
+    #kglobal.prt_dbg("result", result, DEBUG_PRT);
+    #kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[RUN] " + result);
+    #rlst.close();
+    os.system(cmd);
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Run [" + cmd + "] Done");
     return(True);
 
 ##cron_init
@@ -265,9 +267,10 @@ def cron_init():
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Lock Setting");
     kglobal.file_init(LOCK_FP);
     LOCK_STAT=kglobal.lock_init(LOCK_FP);
+    kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);
     LOCK_STAT=kglobal.lock_set(LOCK_STAT);
-    if LOCK_STAT != False:
-        kglobal.lock_write(LOCK_FP, LOCK_STAT);
+    kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);
+    kglobal.lock_write(LOCK_FP, LOCK_STAT);
     kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Lock Set Done");
 
@@ -377,6 +380,8 @@ def run():
     global SLEEP_INTERVAL;
 
     cron_init();
+    #print("GETPID===" + kglobal.get_pidlst("crontab.py"));
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[Crontab.py PID] " + kglobal.get_pidlst("crontab.py"));
     run_cron();
     cron_destroy();
     time.sleep(float(SLEEP_INTERVAL));
@@ -390,4 +395,4 @@ if __name__ == "__main__":
     while True:
         run();
 
-    exit(0);
+    sys.exit(0);
