@@ -1,0 +1,217 @@
+[2017-02-17 12:32:06][INFO] Crontab Initialing
+[2017-02-17 12:32:06][INFO] Crontab Lock Setting
+[2017-02-17 12:32:06][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:06][INFO] Crontab Log Initialing
+[2017-02-17 12:32:06][INFO] Crontab Log Rotating
+[2017-02-17 12:32:06][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:06][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:06][INFO] Crontab Getting Systime
+[2017-02-17 12:32:06][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:06][INFO] Crontab CFG Reading
+[2017-02-17 12:32:06][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:06][INFO] Crontab CFG Checking
+[2017-02-17 12:32:06][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:06][INFO] Crontab Initial Done
+[2017-02-17 12:32:06][INFO] Crontab Running
+[2017-02-17 12:32:06][INFO] Crontab Running Command
+[2017-02-17 12:32:06][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:06][INFO] [RUN] hello world
+[2017-02-17 12:32:06][INFO] Crontab Run Command Done
+[2017-02-17 12:32:06][INFO] Crontab Running Command
+[2017-02-17 12:32:06][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:06][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:06][INFO] Crontab Run Command Done
+[2017-02-17 12:32:06][INFO] Crontab Running Command
+[2017-02-17 12:32:06][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:06][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:06][INFO] Crontab Run Command Done
+[2017-02-17 12:32:06][INFO] Crontab Done
+[2017-02-17 12:32:06][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:06][INFO] Crontab Destroy Done
+[2017-02-17 12:32:06][DEBUG] Crontab DEBUG
+[2017-02-17 12:32:11][INFO] Crontab Initialing
+[2017-02-17 12:32:11][INFO] Crontab Lock Setting
+[2017-02-17 12:32:11][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:11][INFO] Crontab Log Initialing
+[2017-02-17 12:32:11][INFO] Crontab Log Rotating
+[2017-02-17 12:32:11][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:11][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:11][INFO] Crontab Getting Systime
+[2017-02-17 12:32:11][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:11][INFO] Crontab CFG Reading
+[2017-02-17 12:32:11][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:11][INFO] Crontab CFG Checking
+[2017-02-17 12:32:11][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:11][INFO] Crontab Initial Done
+[2017-02-17 12:32:11][INFO] Crontab Running
+[2017-02-17 12:32:11][INFO] Crontab Running Command
+[2017-02-17 12:32:11][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:11][INFO] [RUN] hello world
+[2017-02-17 12:32:11][INFO] Crontab Run Command Done
+[2017-02-17 12:32:11][INFO] Crontab Running Command
+[2017-02-17 12:32:11][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:11][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:11][INFO] Crontab Run Command Done
+[2017-02-17 12:32:11][INFO] Crontab Running Command
+[2017-02-17 12:32:11][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:11][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:11][INFO] Crontab Run Command Done
+[2017-02-17 12:32:11][INFO] Crontab Done
+[2017-02-17 12:32:11][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:11][INFO] Crontab Destroy Done
+[2017-02-17 12:32:11][DEBUG] Crontab DEBUG
+[2017-02-17 12:32:16][INFO] Crontab Initialing
+[2017-02-17 12:32:16][INFO] Crontab Lock Setting
+[2017-02-17 12:32:16][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:16][INFO] Crontab Log Initialing
+[2017-02-17 12:32:16][INFO] Crontab Log Rotating
+[2017-02-17 12:32:16][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:16][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:16][INFO] Crontab Getting Systime
+[2017-02-17 12:32:16][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:16][INFO] Crontab CFG Reading
+[2017-02-17 12:32:16][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:16][INFO] Crontab CFG Checking
+[2017-02-17 12:32:16][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:16][INFO] Crontab Initial Done
+[2017-02-17 12:32:16][INFO] Crontab Running
+[2017-02-17 12:32:16][INFO] Crontab Running Command
+[2017-02-17 12:32:16][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:16][INFO] [RUN] hello world
+[2017-02-17 12:32:16][INFO] Crontab Run Command Done
+[2017-02-17 12:32:16][INFO] Crontab Running Command
+[2017-02-17 12:32:16][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:16][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:16][INFO] Crontab Run Command Done
+[2017-02-17 12:32:16][INFO] Crontab Running Command
+[2017-02-17 12:32:16][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:16][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:16][INFO] Crontab Run Command Done
+[2017-02-17 12:32:16][INFO] Crontab Done
+[2017-02-17 12:32:16][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:16][INFO] Crontab Destroy Done
+[2017-02-17 12:32:16][DEBUG] Crontab DEBUG
+[2017-02-17 12:32:21][INFO] Crontab Initialing
+[2017-02-17 12:32:21][INFO] Crontab Lock Setting
+[2017-02-17 12:32:21][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:21][INFO] Crontab Log Initialing
+[2017-02-17 12:32:21][INFO] Crontab Log Rotating
+[2017-02-17 12:32:21][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:21][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:21][INFO] Crontab Getting Systime
+[2017-02-17 12:32:21][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:21][INFO] Crontab CFG Reading
+[2017-02-17 12:32:21][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:21][INFO] Crontab CFG Checking
+[2017-02-17 12:32:21][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:21][INFO] Crontab Initial Done
+[2017-02-17 12:32:21][INFO] Crontab Running
+[2017-02-17 12:32:21][INFO] Crontab Running Command
+[2017-02-17 12:32:21][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:21][INFO] [RUN] hello world
+[2017-02-17 12:32:21][INFO] Crontab Run Command Done
+[2017-02-17 12:32:21][INFO] Crontab Running Command
+[2017-02-17 12:32:21][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:21][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:21][INFO] Crontab Run Command Done
+[2017-02-17 12:32:21][INFO] Crontab Running Command
+[2017-02-17 12:32:21][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:21][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:21][INFO] Crontab Run Command Done
+[2017-02-17 12:32:21][INFO] Crontab Done
+[2017-02-17 12:32:21][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:21][INFO] Crontab Destroy Done
+[2017-02-17 12:32:21][DEBUG] Crontab DEBUG
+[2017-02-17 12:32:26][INFO] Crontab Initialing
+[2017-02-17 12:32:26][INFO] Crontab Lock Setting
+[2017-02-17 12:32:26][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:26][INFO] Crontab Log Initialing
+[2017-02-17 12:32:26][INFO] Crontab Log Rotating
+[2017-02-17 12:32:26][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:26][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:26][INFO] Crontab Getting Systime
+[2017-02-17 12:32:26][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:26][INFO] Crontab CFG Reading
+[2017-02-17 12:32:26][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:26][INFO] Crontab CFG Checking
+[2017-02-17 12:32:26][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:26][INFO] Crontab Initial Done
+[2017-02-17 12:32:26][INFO] Crontab Running
+[2017-02-17 12:32:26][INFO] Crontab Running Command
+[2017-02-17 12:32:26][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:26][INFO] [RUN] hello world
+[2017-02-17 12:32:26][INFO] Crontab Run Command Done
+[2017-02-17 12:32:26][INFO] Crontab Running Command
+[2017-02-17 12:32:26][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:26][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:26][INFO] Crontab Run Command Done
+[2017-02-17 12:32:26][INFO] Crontab Running Command
+[2017-02-17 12:32:26][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:26][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:26][INFO] Crontab Run Command Done
+[2017-02-17 12:32:26][INFO] Crontab Done
+[2017-02-17 12:32:26][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:26][INFO] Crontab Destroy Done
+[2017-02-17 12:32:26][DEBUG] Crontab DEBUG
+[2017-02-17 12:32:31][INFO] Crontab Initialing
+[2017-02-17 12:32:31][INFO] Crontab Lock Setting
+[2017-02-17 12:32:31][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:31][INFO] Crontab Log Initialing
+[2017-02-17 12:32:31][INFO] Crontab Log Rotating
+[2017-02-17 12:32:31][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:31][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:31][INFO] Crontab Getting Systime
+[2017-02-17 12:32:31][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:31][INFO] Crontab CFG Reading
+[2017-02-17 12:32:31][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:31][INFO] Crontab CFG Checking
+[2017-02-17 12:32:31][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:31][INFO] Crontab Initial Done
+[2017-02-17 12:32:31][INFO] Crontab Running
+[2017-02-17 12:32:31][INFO] Crontab Running Command
+[2017-02-17 12:32:31][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:31][INFO] [RUN] hello world
+[2017-02-17 12:32:31][INFO] Crontab Run Command Done
+[2017-02-17 12:32:31][INFO] Crontab Running Command
+[2017-02-17 12:32:31][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:31][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:31][INFO] Crontab Run Command Done
+[2017-02-17 12:32:31][INFO] Crontab Running Command
+[2017-02-17 12:32:31][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:32][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:32][INFO] Crontab Run Command Done
+[2017-02-17 12:32:32][INFO] Crontab Done
+[2017-02-17 12:32:32][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:32][INFO] Crontab Destroy Done
+[2017-02-17 12:32:32][DEBUG] Crontab DEBUG
+[2017-02-17 12:32:37][INFO] Crontab Initialing
+[2017-02-17 12:32:37][INFO] Crontab Lock Setting
+[2017-02-17 12:32:37][INFO] Crontab Lock Set Done
+[2017-02-17 12:32:37][INFO] Crontab Log Initialing
+[2017-02-17 12:32:37][INFO] Crontab Log Rotating
+[2017-02-17 12:32:37][INFO] Crontab Log Rotate Done
+[2017-02-17 12:32:37][INFO] Crontab Log Initial Done
+[2017-02-17 12:32:37][INFO] Crontab Getting Systime
+[2017-02-17 12:32:37][INFO] Crontab Get Systime Done
+[2017-02-17 12:32:37][INFO] Crontab CFG Reading
+[2017-02-17 12:32:37][INFO] Crontab CFG Read Done
+[2017-02-17 12:32:37][INFO] Crontab CFG Checking
+[2017-02-17 12:32:37][INFO] Crontab CFG Check Done
+[2017-02-17 12:32:37][INFO] Crontab Initial Done
+[2017-02-17 12:32:37][INFO] Crontab Running
+[2017-02-17 12:32:37][INFO] Crontab Running Command
+[2017-02-17 12:32:37][INFO] [CMD] su - root -c " echo \"hello world\"" 2>&1
+[2017-02-17 12:32:37][INFO] [RUN] hello world
+[2017-02-17 12:32:37][INFO] Crontab Run Command Done
+[2017-02-17 12:32:37][INFO] Crontab Running Command
+[2017-02-17 12:32:37][INFO] [CMD] su - kyle -c " cd /Users/Kyle/Data/data/cmb/20170216/src/crontab/bin && python test.py" 2>&1
+[2017-02-17 12:32:37][INFO] [RUN] 32 12 17 02 5
+[2017-02-17 12:32:37][INFO] Crontab Run Command Done
+[2017-02-17 12:32:37][INFO] Crontab Running Command
+[2017-02-17 12:32:37][INFO] [CMD] su - bbb -c " sb" 2>&1
+[2017-02-17 12:32:37][INFO] [RUN] su: unknown login: bbb
+[2017-02-17 12:32:37][INFO] Crontab Run Command Done
+[2017-02-17 12:32:37][INFO] Crontab Done
+[2017-02-17 12:32:37][INFO] Crontab Destroy Initialing
+[2017-02-17 12:32:37][INFO] Crontab Destroy Done
+[2017-02-17 12:32:37][DEBUG] Crontab DEBUG

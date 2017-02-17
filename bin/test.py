@@ -2,6 +2,7 @@
 
 import os;
 import time;
+import logging;
 
 #os.system("while [ 1 -eq 1 ]; do echo \"systemTestAAA\"; sleep 5; done >> ./test.log &");
 #os.system("while [ 1 -eq 1 ]; do echo \"systemTestBBB\"; sleep 5; done >> ./test.log &");
@@ -17,5 +18,7 @@ import time;
 #if size == 1:
 #print flag;
 
-print time.strftime('%M %H %d %m %w',time.localtime(time.time()));
+#print time.strftime('%M %H %d %m %w',time.localtime(time.time()));
 #os.remove("./tt");
+#logging.warning("WARNING");
+#logging.info("INFO");

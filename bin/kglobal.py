@@ -15,11 +15,18 @@ import sys;
 import re;
 import time;
 import shutil;
+import logging;
 
 ##def global values
 NULL="Null";
 LOCK_ST=1;
 LOCK_US=0;
+LOG_LEVEL_INFO=logging.INFO;
+LOG_LEVEL_WARNING=logging.WARNING;
+LOG_LEVEL_DEBUG=logging.DEBUG;
+LOG_MSG_INFO="info";
+LOG_MSG_WARNING="warning";
+LOG_MSG_DEBUG="debug";
 
 ##get work path
 def get_wpth():
@@ -188,3 +195,15 @@ def lock_unset(lock_stat):
         return(LOCK_US);
     else:
         return(False);
+
+##log_msg
+##log msg prt and to file
+def log_msg(fp_log , log_level, msg_level, msg):
+    logging.basicConfig(filename=fp_log, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', level=log_level);
+    if msg_level == LOG_MSG_INFO:
+        logging.info(str(msg));
+    elif msg_level == LOG_MSG_WARNING:
+        logging.warning(str(msg));
+    else:
+        logging.debug(str(msg));
+    return(True);

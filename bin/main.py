@@ -20,6 +20,7 @@ import re;
 import os;
 import time;
 import gc;
+import logging;
 
 ##init kglobal values
 WORK_PTH=kglobal.get_wpth();
@@ -33,7 +34,6 @@ CRONTAB_CFG_FP=CFG_PTH + "/crontab.cfg";
 LOG_FP=LOG_PTH + "/crontab.log";
 LOCK_FP=LOCK_PTH + "/crontab.lock";
 DEBUG_PRT="";
-LOG_MAX_SIZE=0;
 CRON_CONT="";
 CRON_LINENUM=0;
 SLEEP_INTERVAL=0;
@@ -50,6 +50,8 @@ HOUR_NOW="";
 DAY_NOW="";
 MONTH_NOW="";
 WEEK_NOW="";
+LOG_MAX_SIZE=0;
+LOG_LEVEL="";
 LOCK_STAT=0;
 LOG_SIZE=0;
 
@@ -71,6 +73,8 @@ def aly_croncfg():
     count=0;
     CRON_LIST=CRON_CONT.split("\n");
     CRON_LIST.remove("");
+
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab CFG Reading");
     
     for linedt in CRON_LIST:
 
@@ -103,6 +107,7 @@ def aly_croncfg():
 
     CRON_LINENUM=linenum;
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab CFG Read Done");
     return(True);
 
 ##prt cron cfg
@@ -135,6 +140,8 @@ def check_croncfg():
     day_pattern=re.compile(r"^([0-9]|[0-2][0-9]|3[0-1]|\*$)");
     month_pattern=re.compile(r"^([0-9]|0[0-9]|1[0-2]|\*$)");
     week_pattern=re.compile(r"^([0-7]|\*$)");
+
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab CFG Checking");
 
     while linenum < CRON_LINENUM:
 
@@ -175,6 +182,7 @@ def check_croncfg():
             CRON_LINENUM-=1;
             continue;
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab CFG Check Done");
     return(True);
 
 ##time cmp
@@ -188,6 +196,7 @@ def time_cmp(time_set, time_now):
 ##run cron
 def run_cron():
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Running");
     if LOCK_STAT == False:
         return(False);
     
@@ -199,21 +208,26 @@ def run_cron():
 
         linenum+=1;
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Done");
     return(True);
 
 ##run cmd
 def run_cmd(username, command):
 
+    rlst=[];
+    result="";
+    ret=0;
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Running Command");
     command=re.sub(r"\"","\\\"", command);
-    cmd="su - " + username + " -c \" " + command + "\"";
+    cmd="su - " + username + " -c \" " + command + "\" 2>&1";
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[CMD] " + cmd);
     kglobal.prt_dbg("cmd", cmd, DEBUG_PRT);
-    try:
-        os.system(cmd);
-    except Exception, e:
-        sys.stderr.write(e);
-        sys.stderr.flush();
-        return(False);
-
+    rlst=os.popen(cmd);
+    result=('').join(rlst);
+    result=re.sub(r"\n","",result);
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[RUN] " + result);
+    rlst.close();
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Run Command Done");
     return(True);
 
 ##cron_init
@@ -230,6 +244,7 @@ def cron_init():
     global WEEK_NOW;
     global LOCK_STAT;
     global LOG_SIZE;
+    global LOG_LEVEL;
 
     kglobal.dir_init(BIN_PTH);
     kglobal.dir_init(CFG_PTH);
@@ -239,22 +254,30 @@ def cron_init():
     kglobal.file_init(GLOBAL_CFG_FP);
     kglobal.file_init(CRONTAB_CFG_FP);
 
-    DEBUG_PRT=kglobal.get_gval("DEBUG_PRT",GLOBAL_CFG_FP);
-    LOG_MAX_SIZE=int(kglobal.get_gval("LOG_MAX_SIZE",GLOBAL_CFG_FP));
     SLEEP_INTERVAL=int(kglobal.get_gval("SLEEP_INTERVAL",GLOBAL_CFG_FP));
+    LOG_MAX_SIZE=int(kglobal.get_gval("LOG_MAX_SIZE",GLOBAL_CFG_FP));
+    DEBUG_PRT=kglobal.get_gval("DEBUG_PRT",GLOBAL_CFG_FP);
     CRON_CONT=kglobal.read_file(CRONTAB_CFG_FP);
+    LOG_LEVEL=kglobal.get_gval("LOG_LEVEL",GLOBAL_CFG_FP);
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Initialing");
+
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Lock Setting");
     kglobal.file_init(LOCK_FP);
     LOCK_STAT=kglobal.lock_init(LOCK_FP);
     LOCK_STAT=kglobal.lock_set(LOCK_STAT);
     if LOCK_STAT != False:
         kglobal.lock_write(LOCK_FP, LOCK_STAT);
-    print("INIT:" + str(LOCK_STAT));
+    kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Lock Set Done");
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Initialing");
     if kglobal.file_init(LOG_FP):
         LOG_SIZE=kglobal.file_size(LOG_FP) / 1024 / 1024;
     log_rotate();
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Initial Done");
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Getting Systime");
     (MIN_NOW, HOUR_NOW, DAY_NOW, MONTH_NOW, WEEK_NOW) = kglobal.get_systime();
     kglobal.prt_dbg("MIN_NOW", MIN_NOW, DEBUG_PRT);
     kglobal.prt_dbg("HOUR_NOW", HOUR_NOW, DEBUG_PRT);
@@ -264,12 +287,13 @@ def cron_init():
     kglobal.prt_dbg("DEBUG_PRT", DEBUG_PRT, DEBUG_PRT);
     kglobal.prt_dbg("LOG_MAX_SIZE", LOG_MAX_SIZE, DEBUG_PRT);
     kglobal.prt_dbg("SLEEP_INTERVAL", SLEEP_INTERVAL, DEBUG_PRT);
-    kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Get Systime Done");
 
     aly_croncfg();
     check_croncfg();
     #prt_croncfg();
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Initial Done");
     return(True);
 
 ##log rotate
@@ -280,6 +304,8 @@ def log_rotate():
     global LOG_SIZE;
     global LOG_MAX_SIZE;
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotating");
+
     kglobal.prt_dbg("LOG_SIZE", LOG_SIZE, DEBUG_PRT);
     kglobal.prt_dbg("LOG_MAX_SIZE", LOG_MAX_SIZE, DEBUG_PRT);
 
@@ -288,13 +314,13 @@ def log_rotate():
         kglobal.file_init(LOG_FP);
         LOG_SIZE=0;
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Done");
     return(True);
 
 ##cron_destroy
 def cron_destroy():
 
     global DEBUG_PRT;
-    global LOG_MAX_SIZE;
     global CRON_CONT;
     global CRON_LINENUM;
     global CRON_LIST;
@@ -310,14 +336,22 @@ def cron_destroy():
     global DAY_NOW;
     global MONTH_NOW;
     global WEEK_NOW;
+    global LOG_MAX_SIZE;
+    global LOG_LEVEL;
     global LOCK_STAT;
 
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Destroy Initialing");
+
     LOCK_STAT=kglobal.lock_unset(LOCK_STAT);
-    print("DESTROY:" + str(LOCK_STAT));
+    kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);
     kglobal.lock_write(LOCK_FP, str(LOCK_STAT));
+
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Destroy Done");
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_DEBUG, "Crontab DEBUG");
 
     DEBUG_PRT="";
     LOG_MAX_SIZE=0;
+    LOG_LEVEL="";
     CRON_CONT="";
     CRON_LINENUM=0;
     CRON_LIST=[];
