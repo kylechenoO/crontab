@@ -344,7 +344,6 @@ def cron_destroy():
     kglobal.lock_write(LOCK_FP, str(LOCK_STAT));
 
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Destroy Done");
-    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_DEBUG, "Crontab DEBUG");
 
     DEBUG_PRT="";
     LOG_MAX_SIZE=0;
