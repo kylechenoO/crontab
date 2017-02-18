@@ -2,11 +2,10 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170217v1
+## Version 20170218v1
 ## Note:
-##  logging funcs from kglobal
-##  use multiprocessing to get out of waiting process
-##  fix lock bug
+##  try to use popen() run cmd but failed after test it cant run background
+##  change to use Service.py monitor
 ###############################################################################
 #!/usr/bin/env python
 
@@ -34,7 +33,6 @@ LOCK_FP=LOCK_PTH + "/crontab.lock";
 DEBUG_PRT="";
 CRON_CONT="";
 CRON_LINENUM=0;
-SLEEP_INTERVAL=0;
 CRON_LIST=[];
 MIN_LIST=[];
 HOUR_LIST=[];
@@ -214,9 +212,8 @@ def run_cron():
 ##run cmd
 def run_cmd(username, command):
 
-    rlst=[];
-    result="";
-    ret=0;
+    #rlst=[];
+    #result="";
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Running Command");
     command=re.sub(r"\"","\\\"", command);
     cmd="su - " + username + " -c \"" + command + "\" &";
@@ -238,7 +235,6 @@ def cron_init():
     global DEBUG_PRT;
     global LOG_MAX_SIZE;
     global CRON_CONT;
-    global SLEEP_INTERVAL;
     global MIN_NOW;
     global HOUR_NOW;
     global DAY_NOW;
@@ -256,7 +252,6 @@ def cron_init():
     kglobal.file_init(GLOBAL_CFG_FP);
     kglobal.file_init(CRONTAB_CFG_FP);
 
-    SLEEP_INTERVAL=int(kglobal.get_gval("SLEEP_INTERVAL",GLOBAL_CFG_FP));
     LOG_MAX_SIZE=int(kglobal.get_gval("LOG_MAX_SIZE",GLOBAL_CFG_FP));
     DEBUG_PRT=kglobal.get_gval("DEBUG_PRT",GLOBAL_CFG_FP);
     CRON_CONT=kglobal.read_file(CRONTAB_CFG_FP);
@@ -289,7 +284,6 @@ def cron_init():
     kglobal.prt_dbg("WEEK_NOW", WEEK_NOW, DEBUG_PRT);
     kglobal.prt_dbg("DEBUG_PRT", DEBUG_PRT, DEBUG_PRT);
     kglobal.prt_dbg("LOG_MAX_SIZE", LOG_MAX_SIZE, DEBUG_PRT);
-    kglobal.prt_dbg("SLEEP_INTERVAL", SLEEP_INTERVAL, DEBUG_PRT);
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Get Systime Done");
 
     aly_croncfg();
@@ -375,24 +369,17 @@ def cron_destroy():
     return(True);
 
 ##run function
-def run():
-
-    global SLEEP_INTERVAL;
+def main():
 
     cron_init();
-    #print("GETPID===" + kglobal.get_pidlst("crontab.py"));
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[Crontab.py PID] " + kglobal.get_pidlst("crontab.py"));
     run_cron();
     cron_destroy();
-    time.sleep(float(SLEEP_INTERVAL));
 
-    SLEEP_INTERVAL=0;
     return(True);
 
 ##main function
 if __name__ == "__main__":
 
-    while True:
-        run();
-
+    main();
     sys.exit(0);
