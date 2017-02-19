@@ -2,10 +2,10 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170218v1
+## Version 20170219v1
 ## Note:
-##  try to use popen() run cmd but failed after test it cant run background
-##  change to use Service.py monitor
+##  Change into service mode
+##  found a new lock bug(must change lock into global mode, initial above all)
 ###############################################################################
 #!/usr/bin/env python
 
@@ -50,6 +50,9 @@ LOG_MAX_SIZE=0;
 LOG_LEVEL="";
 LOCK_STAT=0;
 LOG_SIZE=0;
+SLEEP_INTERVAL=0;
+BIN_FP="crontab.py";
+PROC_PID=0;
 
 ##aly crontab.cfg
 def aly_croncfg():
@@ -243,6 +246,8 @@ def cron_init():
     global LOCK_STAT;
     global LOG_SIZE;
     global LOG_LEVEL;
+    global SLEEP_INTERVAL;
+    global PROC_PID;
 
     kglobal.dir_init(BIN_PTH);
     kglobal.dir_init(CFG_PTH);
@@ -254,10 +259,19 @@ def cron_init():
 
     LOG_MAX_SIZE=int(kglobal.get_gval("LOG_MAX_SIZE",GLOBAL_CFG_FP));
     DEBUG_PRT=kglobal.get_gval("DEBUG_PRT",GLOBAL_CFG_FP);
+    SLEEP_INTERVAL=kglobal.get_gval("SLEEP_INTERVAL",GLOBAL_CFG_FP);
     CRON_CONT=kglobal.read_file(CRONTAB_CFG_FP);
     LOG_LEVEL=kglobal.get_gval("LOG_LEVEL",GLOBAL_CFG_FP);
 
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Initialing");
+
+    pidlst=kglobal.get_pidlst(BIN_FP);
+    pidlst=re.sub(r"\ $","",pidlst);
+    PROC_PID=os.getpid();
+    if str(PROC_PID) != str(pidlst):
+        kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_ERROR, "Crontab Proc Alreally Running");
+        kglobal.prt_dbg("ERROR", "Crontab Proc Alreally Running", DEBUG_PRT);
+        sys.exit(1);
 
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Lock Setting");
     kglobal.file_init(LOCK_FP);
@@ -371,14 +385,17 @@ def cron_destroy():
 def main():
 
     cron_init();
-    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[Crontab.py PID] " + kglobal.get_pidlst("crontab.py"));
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "[Crontab.py PID] " + kglobal.get_pidlst(BIN_FP));
     run_cron();
     cron_destroy();
+    time.sleep(float(SLEEP_INTERVAL));
 
     return(True);
 
 ##main function
 if __name__ == "__main__":
 
-    main();
+    while True:
+        main();
+
     sys.exit(0);

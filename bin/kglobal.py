@@ -2,12 +2,9 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170217v1
+## Version 20170219v1
 ## Note:
-##  add logging modules
-##  add log level configure
-##  add get_pidlist func to get main pid
-##  fix lock bug
+##  fox some bugs
 ###############################################################################
 #!/usr/bin/env python
 
@@ -26,9 +23,13 @@ LOCK_US=0;
 LOG_LEVEL_INFO=logging.INFO;
 LOG_LEVEL_WARNING=logging.WARNING;
 LOG_LEVEL_DEBUG=logging.DEBUG;
+LOG_LEVEL_ERROR=logging.ERROR;
+LOG_LEVEL_CRITICAL=logging.CRITICAL;
 LOG_MSG_INFO="info";
 LOG_MSG_WARNING="warning";
 LOG_MSG_DEBUG="debug";
+LOG_MSG_ERROR="error";
+LOG_MSG_CRITICAL="critical";
 
 ##get work path
 def get_wpth():
@@ -203,6 +204,12 @@ def log_msg(fp_log , log_level, msg_level, msg):
         logging.info(str(msg));
     elif msg_level == LOG_MSG_WARNING:
         logging.warning(str(msg));
+    elif msg_level == LOG_MSG_DEBUG:
+        logging.debug(str(msg));
+    elif msg_level == LOG_MSG_ERROR:
+        logging.error(str(msg));
+    elif msg_level == LOG_MSG_CRITICAL:
+        logging.critical(str(msg));
     else:
         logging.debug(str(msg));
     return(True);
@@ -212,7 +219,7 @@ def log_msg(fp_log , log_level, msg_level, msg):
 def get_pidlst(proc):
     rlst=[];
     result="";
-    rlst=os.popen("ps aux | awk '/%s$/{ printf(\"%%s \", $2); }'" % (proc));
+    rlst=os.popen("ps aux | awk '/python/ && /%s$/{ printf(\"%%s \", $2); }'" % (proc));
     result=('').join(rlst);
     result=re.sub(r"\n","",result);
     rlst.close();
