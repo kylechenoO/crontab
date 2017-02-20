@@ -2,14 +2,16 @@
 ## Service.Py
 ## the crontab service function
 ## Written By Kyle Chen
-## Version 20170219v1
+## Version 20170220v1
 ## Note:
-##  add input args to manager crontab service
+##  1.add startup pid check
+##  2.use crontab.destroy(); function to destroy lock
 ###############################################################################
 #!/usr/bin/env python
 
 ##import pkgs
 import kglobal;
+import crontab;
 import sys;
 import os;
 import re;
@@ -25,11 +27,18 @@ PROC_NAME=re.sub("\/", "\\/", BIN_FP);
 ##service_start
 def service_start():
 
+    global PROC_NAME;
+
+    pidlst=kglobal.get_pidlst(PROC_NAME);
+    if str(pidlst) != "":
+        sys.stderr.write("Starting Crontab Service            [started]\nAlreally Started\n");
+        sys.stderr.flush();
+        return(False);
+
     cmd="python " + BIN_FP + " &> /dev/null &";
     os.system(cmd);
     sys.stdout.write("Starting Crontab Service            [started]\n");
     sys.stderr.flush();
-
     return(True);
 
 ##service_stop
@@ -39,12 +48,14 @@ def service_stop():
 
     pidlst=kglobal.get_pidlst(PROC_NAME);
     if str(pidlst) != "":
+        crontab.destroy();
         cmd="kill -9 " + pidlst;
         os.system(cmd);
         sys.stdout.write("Stopping Crontab Service            [stopped]\n");
         sys.stderr.flush();
         return(True);
     else:
+        crontab.destroy();
         sys.stdout.write("Stopping Crontab Service            [stopped]\n");
         sys.stderr.write("Service Alreally Stopped\n");
         sys.stdout.flush();

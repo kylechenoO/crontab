@@ -2,9 +2,9 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170219v1
+## Version 20170220v1
 ## Note:
-##  fox some bugs
+##  fix lock bugs && add error, critical log level
 ###############################################################################
 #!/usr/bin/env python
 
@@ -191,10 +191,7 @@ def lock_set(lock_stat):
 ##lock_unset
 ##unset lock status
 def lock_unset(lock_stat):
-    if int(lock_stat) == LOCK_ST:
-        return(LOCK_US);
-    else:
-        return(False);
+    return(LOCK_US);
 
 ##log_msg
 ##log msg prt and to file
