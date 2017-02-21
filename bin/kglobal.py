@@ -2,9 +2,9 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170220v1
+## Version 20170221v1
 ## Note:
-##  fix lock bugs && add error, critical log level
+##  optimize some funcs
 ###############################################################################
 #!/usr/bin/env python
 
@@ -181,12 +181,11 @@ def lock_write(fp_lock, key):
 ##lock_set
 ##set lock status
 def lock_set(lock_stat):
-    if (lock_stat == "") or (int(lock_stat) == LOCK_US):
-        return(LOCK_ST);
-    else:
+    if (lock_stat != "") or (int(lock_stat) == LOCK_ST):
         sys.stdout.write("LOCK EXIST.!");
         sys.stdout.flush();
-        return(LOCK_ST);
+
+    return(LOCK_ST);
 
 ##lock_unset
 ##unset lock status

@@ -2,10 +2,9 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170220v1
+## Version 20170221v1
 ## Note:
-##  1.add init() && destroy() to initial global funcs
-##  2.fix the lock bugs
+##  optimize some funcs
 ###############################################################################
 #!/usr/bin/env python
 
