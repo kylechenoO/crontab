@@ -32,6 +32,7 @@ LOG_MSG_ERROR="error";
 LOG_MSG_CRITICAL="critical";
 
 ##get work path
+##return work_path
 def get_wpth():
 
     result="";
@@ -47,11 +48,13 @@ def get_wpth():
     return(result);
 
 ##read file
+##return file content
 def read_file(file_name):
     
     result="";
     flag="";
     size="";
+
     com_pattern=re.compile("^#");
     fp=open(file_name);
 
@@ -69,6 +72,7 @@ def read_file(file_name):
     return(result);
 
 ##get global cfg val
+##return value for the var
 def get_gval(var, file_name):
 
     result="";
@@ -94,6 +98,7 @@ def get_gval(var, file_name):
     return(val);
 
 ##prt_dbg
+##return flag
 def prt_dbg(var, val, flag):
 
     if flag == "True":
@@ -215,8 +220,10 @@ def log_msg(fp_log , log_level, msg_level, msg):
 def get_pidlst(proc):
     rlst=[];
     result="";
+
     rlst=os.popen("ps aux | awk '/python/ && /%s$/{ printf(\"%%s \", $2); }'" % (proc));
     result=('').join(rlst);
     result=re.sub(r"\n","",result);
     rlst.close();
+
     return(result);
