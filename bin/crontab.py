@@ -116,9 +116,6 @@ def aly_croncfg():
             COMM_LIST[linenum]=COMM_LIST[linenum] + " " + linedt_list[count];
             count+=1;
 
-        ##MARK is not used
-        #count+=1;
-
         ##ok, this line aly done, just save as a legal line and continue
         linenum+=1;
 
@@ -253,10 +250,6 @@ def run_cron():
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Running");
 
-    ##MARK is not used
-    #if LOCK_STAT == False:
-        #return(False);
-    
     ##priviate values
     linenum = 0;
 
