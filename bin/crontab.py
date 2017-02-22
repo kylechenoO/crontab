@@ -2,9 +2,9 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170221v1
+## Version 20170222v1
 ## Note:
-##  optimize some funcs
+##  fix auto log_rotate bug
 ###############################################################################
 #!/usr/bin/env python
 
@@ -314,6 +314,18 @@ def cron_init():
     global DAY_NOW;
     global MONTH_NOW;
     global WEEK_NOW;
+    global LOG_SIZE;
+
+    ##write log file
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Starting");
+
+    ##log rotate
+    if kglobal.file_init(LOG_FP):
+        LOG_SIZE=kglobal.file_size(LOG_FP) / 1024 / 1024;
+    log_rotate();
+
+    ##write log file
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Done");
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Getting Systime");
@@ -360,7 +372,7 @@ def log_rotate():
     global LOG_MAX_SIZE;
 
     ##write log file
-    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotating");
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Set Starting");
 
     ##debug print
     kglobal.prt_dbg("LOG_SIZE", LOG_SIZE, DEBUG_PRT);
@@ -379,7 +391,7 @@ def log_rotate():
         LOG_SIZE=0;
 
     ##write log file
-    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Done");
+    kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Set Done");
 
     ##return value
     return(True);
@@ -505,11 +517,6 @@ def init():
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Lock Set Done");
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Initialing");
-
-    ##initial logfile and run log_rotate();
-    if kglobal.file_init(LOG_FP):
-        LOG_SIZE=kglobal.file_size(LOG_FP) / 1024 / 1024;
-    log_rotate();
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Initial Done");

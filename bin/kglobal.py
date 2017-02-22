@@ -2,9 +2,9 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170221v1
+## Version 20170222v1
 ## Note:
-##  optimize some funcs
+##  fix log_rotate bug
 ###############################################################################
 #!/usr/bin/env python
 
@@ -159,11 +159,12 @@ def file_rm(file_name):
 ##move or rename a file
 def file_mv(src, dst):
     if os.path.isfile(dst):
-        os.remove(dst);
-        shutil.copy(src, dst);
+        if os.remove(dst):
+            shutil.copy(src, dst);
     else:
         shutil.copy(src, dst);
         os.remove(src);
+
     return(True);
 
 ##lock_init
