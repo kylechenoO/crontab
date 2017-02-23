@@ -1,5 +1,12 @@
 ##Crontab Service in Python README
 Dev Logs:
+
+20170223v1:
+	To Fix Python 2.6.6 Bugs.
+
+20170222v1:
+	To Fix Log Bugs;
+
 20170221v1:
 	To optimize some funcs and test on Linux/MacOS. Stilling checking mem out.
 
