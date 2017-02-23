@@ -467,6 +467,7 @@ def init():
     DEBUG_PRT=kglobal.get_gval("DEBUG_PRT",GLOBAL_CFG_FP);
     SLEEP_INTERVAL=kglobal.get_gval("SLEEP_INTERVAL",GLOBAL_CFG_FP);
     LOG_LEVEL=kglobal.get_gval("LOG_LEVEL",GLOBAL_CFG_FP);
+    LOG_LEVEL=kglobal.get_loglevel(LOG_LEVEL);
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Initialing");
@@ -498,6 +499,8 @@ def init():
 
     ##read LOCK_STAT from lock file
     LOCK_STAT=kglobal.lock_init(LOCK_FP);
+    if LOCK_STAT == "":
+        LOCK_STAT=kglobal.LOCK_US;
 
     ##debug print
     kglobal.prt_dbg("LOCK_STAT", LOCK_STAT, DEBUG_PRT);

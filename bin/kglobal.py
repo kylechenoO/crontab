@@ -201,7 +201,9 @@ def lock_unset(lock_stat):
 ##log_msg
 ##log msg prt and to file
 def log_msg(fp_log , log_level, msg_level, msg):
-    logging.basicConfig(filename=fp_log, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', level=log_level);
+    #logging.basicConfig(filename=fp_log, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', level=log_level);
+    logging.basicConfig(level=log_level, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', filename=fp_log, filemode='w');
+
     if msg_level == LOG_MSG_INFO:
         logging.info(str(msg));
     elif msg_level == LOG_MSG_WARNING:
@@ -228,3 +230,20 @@ def get_pidlst(proc):
     rlst.close();
 
     return(result);
+
+##get_loglevel
+##trans str to loglevel
+def get_loglevel(level):
+
+    if level == "INFO":
+        return(LOG_LEVEL_INFO);
+    elif level == "WARNING":
+        return(LOG_LEVEL_WARNING);
+    elif level == "DEBUG":
+        return(LOG_LEVEL_DEBUG);
+    elif level == "ERROR":
+        return(LOG_LEVEL_ERROR);
+    elif level == "CRITICAL":
+        return(LOG_LEVEL_CRITICAL);
+    else:
+        return(LOG_LEVEL_DEBUG);
