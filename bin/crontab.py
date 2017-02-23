@@ -2,9 +2,11 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170222v1
+## Version 20170232v1
 ## Note:
-##  fix auto log_rotate bug
+##  Fix log_msg Bug
+##  Fix lock_init Bug
+##  Fix Python 2.6.6 Support
 ###############################################################################
 #!/usr/bin/env python
 

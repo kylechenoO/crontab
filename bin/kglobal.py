@@ -2,9 +2,11 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170222v1
+## Version 20170223v1
 ## Note:
-##  fix log_rotate bug
+##  Fix log_msg Bug
+##  Fix lock_init Bug
+##  Add Python 2.6.6 Support
 ###############################################################################
 #!/usr/bin/env python
 
