@@ -2,11 +2,9 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170232v1
+## Version 20170227v1
 ## Note:
-##  Fix log_msg Bug
-##  Fix lock_init Bug
-##  Fix Python 2.6.6 Support
+##  Add multi pattern to all time field
 ###############################################################################
 #!/usr/bin/env python
 
@@ -162,11 +160,11 @@ def check_croncfg():
     linenum=0;
 
     ##create pattern to match the time
-    min_pattern=re.compile(r"^([0-9]|[0-5][0-9]|\*)$");
-    hour_pattern=re.compile(r"^([0-9]|[0-1][0-9]|2[0-4]|\*)$");
-    day_pattern=re.compile(r"^([0-9]|[0-2][0-9]|3[0-1]|\*$)");
-    month_pattern=re.compile(r"^([0-9]|0[0-9]|1[0-2]|\*$)");
-    week_pattern=re.compile(r"^([0-7]|\*$)");
+    min_pattern=re.compile(r"^(\d+[,\d]*|\*)$");
+    hour_pattern=re.compile(r"^(\d+[,\d]*|\*)$");
+    day_pattern=re.compile(r"^(\d+[,\d]*|\*)$");
+    month_pattern=re.compile(r"^(\d+[,\d]*|\*)$");
+    week_pattern=re.compile(r"^(\d+[,\d]*|\*)$");
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab CFG Checking");
@@ -231,17 +229,32 @@ def check_croncfg():
 ##time cmp
 ##to compare a time field
 def time_cmp(time_set, time_now):
+
+    ##private values
+    time_set=re.sub(r",+$","",time_set);
+    time_lst=[time_set];
+    lstsize=1;
+
+    ##check multi pattern
+    split_pattern=re.compile(r"(,)");
+    flag_split=split_pattern.findall(time_set);
+    size_split=len(flag_split);
+
+    ##get multi pattern size
+    if size_split >= 1:
+        time_lst=time_set.split(",");
+        lstsize=len(time_lst);
     
-    ##if is now or "*" just return True, if not return False
-    if ( time_set == time_now ) or ( time_set == "*" ):
+    ##check time and run
+    i=0;
+    while i < lstsize:
+        ##if is now or "*" just return True, if not return False
+        if ( time_lst[i] == time_now ) or ( time_lst[i] == "*" ):
+            return True;
+        i+=1;
 
-        ##return value
-        return True;
-
-    else:
-
-        ##return value
-        return False;
+    ##return value
+    return False;
 
 ##run cron
 def run_cron():
@@ -356,7 +369,7 @@ def cron_init():
     check_croncfg();
 
     ##print croncfg
-    #prt_croncfg();
+    prt_croncfg();
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Initial Done");
