@@ -2,11 +2,9 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 20170223v1
+## Version 201700309v1
 ## Note:
-##  Fix log_msg Bug
-##  Fix lock_init Bug
-##  Add Python 2.6.6 Support
+##  Add AIX Support And Fix Some Bugs
 ###############################################################################
 #!/usr/bin/env python
 
@@ -226,9 +224,9 @@ def get_pidlst(proc):
     rlst=[];
     result="";
 
-    rlst=os.popen("ps aux | awk '/python/ && /%s$/{ printf(\"%%s \", $2); }'" % (proc));
+    ##to fix AIX pidlst null Bug
+    rlst=os.popen("ps -elf | awk '{ i=0; if(($0 !~ /awk/) && ($0 !~ /grep/) && ($0 !~ /vi/) && ($0 ~ /python/) && ($0 ~ /%s/)){ result[i]=$4; i+=1; }}END{ for(j=0;j<i;j++){ printf(\"%%s\", result[j]);} printf(\"%%s\", result[j]); }'" % (proc));
     result=('').join(rlst);
-    result=re.sub(r"\n","",result);
     rlst.close();
 
     return(result);
