@@ -1,9 +1,12 @@
 ##Crontab Service in Python README
 Dev Logs:
 
+<<<<<<< HEAD
 20170310v1:
         Fix log output bug and looks run better in Linux/Aix.
 
+=======
+>>>>>>> edcacf5f24c11f0c280e92859cd80385744ad9e9
 20170309v1:
 	To Add AIX Support and Fix Some Bugs.
 

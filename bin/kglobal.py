@@ -2,9 +2,15 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
+<<<<<<< HEAD
 ## Version 201700310v1
 ## Note:
 ##  Fix log output bug and looks run better in Linux/Aix
+=======
+## Version 201700309v1
+## Note:
+##  Add AIX Support And Fix Some Bugs
+>>>>>>> edcacf5f24c11f0c280e92859cd80385744ad9e9
 ###############################################################################
 #!/usr/bin/env python
 
@@ -225,7 +231,11 @@ def get_pidlst(proc):
     result="";
 
     ##to fix AIX pidlst null Bug
+<<<<<<< HEAD
     rlst=os.popen("ps -elf | awk '{ if(($0 !~ /awk/) && ($0 !~ /grep/) && ($0 !~ /vi/) && ($0 ~ /python/) && ($0 ~ /%s/)){ result[$4]=0; }}END{ for(i in result){ res=sprintf(\"%%s %%s\",res, i); } gsub(/^\ /,\"\",res); printf res; }'" % (proc));
+=======
+    rlst=os.popen("ps -elf | awk '{ i=0; if(($0 !~ /awk/) && ($0 !~ /grep/) && ($0 !~ /vi/) && ($0 ~ /python/) && ($0 ~ /%s/)){ result[i]=$4; i+=1; }}END{ for(j=0;j<i;j++){ printf(\"%%s\", result[j]);} printf(\"%%s\", result[j]); }'" % (proc));
+>>>>>>> edcacf5f24c11f0c280e92859cd80385744ad9e9
     result=('').join(rlst);
     rlst.close();
 
