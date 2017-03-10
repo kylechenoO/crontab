@@ -2,9 +2,9 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 20170227v1
+## Version 201700310v1
 ## Note:
-##  Add multi pattern to all time field
+##  Fix log output bug and looks run better in Linux/Aix
 ###############################################################################
 #!/usr/bin/env python
 
@@ -49,6 +49,7 @@ LOG_MAX_SIZE=0;
 LOG_LEVEL="";
 LOCK_STAT=0;
 LOG_SIZE=0;
+LOG_NOHUP_SIZE=0;
 SLEEP_INTERVAL=0;
 BIN_FP="crontab.py";
 PROC_PID=0;
@@ -330,14 +331,15 @@ def cron_init():
     global MONTH_NOW;
     global WEEK_NOW;
     global LOG_SIZE;
+    global LOG_NOHUP_SIZE;
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Starting");
 
-    ##log rotate
+    ##crontab.log rotate
     if kglobal.file_init(LOG_FP):
         LOG_SIZE=kglobal.file_size(LOG_FP) / 1024 / 1024;
-    log_rotate();
+    log_rotate(LOG_FP, LOG_SIZE);
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Done");
@@ -380,7 +382,7 @@ def cron_init():
 ##log rotate
 ##if logfile larger or equal LOG_MAX_SIZE just rotate it
 ##rotate it only once
-def log_rotate():
+def log_rotate(fp, size):
 
     ##global values
     global LOG_SIZE;
@@ -390,17 +392,17 @@ def log_rotate():
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Set Starting");
 
     ##debug print
-    kglobal.prt_dbg("LOG_SIZE", LOG_SIZE, DEBUG_PRT);
+    kglobal.prt_dbg("LOG_SIZE", size, DEBUG_PRT);
     kglobal.prt_dbg("LOG_MAX_SIZE", LOG_MAX_SIZE, DEBUG_PRT);
 
     ##check LOG_SIZE
-    if LOG_SIZE >= LOG_MAX_SIZE:
+    if size >= LOG_MAX_SIZE:
         
         ##if LOG_SIZE is lager than LOG_MAX_SIZE setting, just mv it to a backup log
-        kglobal.file_mv(LOG_FP, LOG_FP + ".old");
+        kglobal.file_mv(fp, fp + ".old");
 
         ##create a new blank log file
-        kglobal.file_init(LOG_FP);
+        kglobal.file_init(fp);
 
         ##reset LOG_SIZE
         LOG_SIZE=0;
@@ -430,6 +432,8 @@ def cron_destroy():
     global DAY_NOW;
     global MONTH_NOW;
     global WEEK_NOW;
+    global LOG_SIZE;
+    global LOG_NOHUP_SIZE;
 
     ##to set them Null
     CRON_CONT="";
@@ -447,6 +451,8 @@ def cron_destroy():
     DAY_NOW="";
     MONTH_NOW="";
     WEEK_NOW="";
+    LOG_SIZE=0;
+    LOG_NOHUP_SIZE=0;
 
     ##free the mem
     gc.collect();
@@ -460,7 +466,6 @@ def init():
     ##global values
     global DEBUG_PRT;
     global LOG_MAX_SIZE;
-    global LOG_SIZE;
     global LOCK_STAT;
     global LOG_LEVEL;
     global SLEEP_INTERVAL;
@@ -489,13 +494,12 @@ def init():
 
     ##get pidlist and del the last space
     pidlst=kglobal.get_pidlst(BIN_FP);
-    pidlst=re.sub(r"\ $","",pidlst);
 
     ##get PROC_PID
     PROC_PID=os.getpid();
 
     ##if there is not only one proc
-    if str(PROC_PID) != str(pidlst):
+    if (str(PROC_PID) != str(pidlst)) and (str(pidlst) != ""):
 
         ##write log file
         kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_ERROR, "Crontab Proc Alreally Running");

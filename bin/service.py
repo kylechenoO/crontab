@@ -2,9 +2,9 @@
 ## Service.Py
 ## the crontab service function
 ## Written By Kyle Chen
-## Version 20170221v1
+## Version 201700310v1
 ## Note:
-##  add some comments
+##  Fix log output bug and looks run better in Linux/Aix
 ###############################################################################
 #!/usr/bin/env python
 
@@ -21,6 +21,7 @@ BIN_PTH=WORK_PTH + "/bin";
 BIN_FP=BIN_PTH + "/crontab.py";
 LOCK_PTH=WORK_PTH + "/lock";
 LOCK_FP=LOCK_PTH + "/crontab.lock";
+LOG_PTH=WORK_PTH + "/log";
 PROC_NAME=re.sub("\/", "\\/", BIN_FP);
 
 ##service_start
@@ -43,7 +44,7 @@ def service_start():
         return(False);
 
     ##packed cmd value
-    cmd="python " + BIN_FP + " &> /dev/null &";
+    cmd="nohup python " + BIN_FP + " > /dev/null 2>&1 &";
 
     ##just run it
     os.system(cmd);
