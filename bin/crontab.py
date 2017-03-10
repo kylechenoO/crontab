@@ -2,15 +2,9 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-<<<<<<< HEAD
 ## Version 201700310v1
 ## Note:
 ##  Fix log output bug and looks run better in Linux/Aix
-=======
-## Version 201700309v1
-## Note:
-##  Add AIX Support
->>>>>>> edcacf5f24c11f0c280e92859cd80385744ad9e9
 ###############################################################################
 #!/usr/bin/env python
 
@@ -34,7 +28,6 @@ LOCK_PTH=WORK_PTH + "/lock";
 GLOBAL_CFG_FP=CFG_PTH + "/global.cfg";
 CRONTAB_CFG_FP=CFG_PTH + "/crontab.cfg";
 LOG_FP=LOG_PTH + "/crontab.log";
-LOG_NOHUP_FP=LOG_PTH + "/nohup.log";
 LOCK_FP=LOCK_PTH + "/crontab.lock";
 DEBUG_PRT="";
 CRON_CONT="";
@@ -347,14 +340,6 @@ def cron_init():
     if kglobal.file_init(LOG_FP):
         LOG_SIZE=kglobal.file_size(LOG_FP) / 1024 / 1024;
     log_rotate(LOG_FP, LOG_SIZE);
-<<<<<<< HEAD
-=======
-
-    ##nohup.out rotate
-    if kglobal.file_init(LOG_NOHUP_FP):
-        LOG_NOHUP_SIZE=kglobal.file_size(LOG_NOHUP_FP) / 1024 / 1024;
-    log_rotate(LOG_NOHUP_FP, LOG_NOHUP_SIZE);
->>>>>>> edcacf5f24c11f0c280e92859cd80385744ad9e9
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Log Rotate Done");
