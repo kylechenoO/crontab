@@ -2,9 +2,9 @@
 ## Kglobal.Py
 ## some global funcs
 ## Written By Kyle Chen
-## Version 201700310v1
+## Version 201700315v1
 ## Note:
-##  Fix log output bug and looks run better in Linux/Aix
+##  Fix Log Rotate Bug
 ###############################################################################
 #!/usr/bin/env python
 
@@ -20,16 +20,21 @@ import logging;
 NULL="Null";
 LOCK_ST=1;
 LOCK_US=0;
-LOG_LEVEL_INFO=logging.INFO;
-LOG_LEVEL_WARNING=logging.WARNING;
-LOG_LEVEL_DEBUG=logging.DEBUG;
-LOG_LEVEL_ERROR=logging.ERROR;
-LOG_LEVEL_CRITICAL=logging.CRITICAL;
-LOG_MSG_INFO="info";
-LOG_MSG_WARNING="warning";
-LOG_MSG_DEBUG="debug";
-LOG_MSG_ERROR="error";
-LOG_MSG_CRITICAL="critical";
+#LOG_LEVEL_INFO=logging.INFO;
+#LOG_LEVEL_WARNING=logging.WARNING;
+#LOG_LEVEL_DEBUG=logging.DEBUG;
+#LOG_LEVEL_ERROR=logging.ERROR;
+#LOG_LEVEL_CRITICAL=logging.CRITICAL;
+LOG_LEVEL_INFO="INFO";
+LOG_LEVEL_WARNING="WARNING";
+LOG_LEVEL_DEBUG="DEBUG";
+LOG_LEVEL_ERROR="ERROR";
+LOG_LEVEL_CRITICAL="CRITICAL";
+LOG_MSG_INFO="INFO";
+LOG_MSG_WARNING="WARNING";
+LOG_MSG_DEBUG="DEBUG";
+LOG_MSG_ERROR="ERROR";
+LOG_MSG_CRITICAL="CRITICAL";
 
 ##get work path
 ##return work_path
@@ -202,20 +207,28 @@ def lock_unset(lock_stat):
 ##log msg prt and to file
 def log_msg(fp_log , log_level, msg_level, msg):
     #logging.basicConfig(filename=fp_log, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', level=log_level);
-    logging.basicConfig(level=log_level, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', filename=fp_log, filemode='w');
+    #logging.basicConfig(level=log_level, format='[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %I:%M:%S', filename=fp_log, filemode='w');
 
-    if msg_level == LOG_MSG_INFO:
-        logging.info(str(msg));
-    elif msg_level == LOG_MSG_WARNING:
-        logging.warning(str(msg));
-    elif msg_level == LOG_MSG_DEBUG:
-        logging.debug(str(msg));
-    elif msg_level == LOG_MSG_ERROR:
-        logging.error(str(msg));
-    elif msg_level == LOG_MSG_CRITICAL:
-        logging.critical(str(msg));
-    else:
-        logging.debug(str(msg));
+    #if msg_level == LOG_MSG_INFO:
+        #logging.info(str(msg));
+    #elif msg_level == LOG_MSG_WARNING:
+        #logging.warning(str(msg));
+    #elif msg_level == LOG_MSG_DEBUG:
+        #logging.debug(str(msg));
+    #elif msg_level == LOG_MSG_ERROR:
+        #logging.error(str(msg));
+    #elif msg_level == LOG_MSG_CRITICAL:
+        #logging.critical(str(msg));
+    #else:
+        #logging.debug(str(msg));
+
+    ## To Fix Log Rotate Blank Bug.!!!
+    _timestp=time.strftime('[%Y-%m-%d %H:%M:%S]',time.localtime(time.time()));
+    _msg="[" + str(log_level) + "][" + str(msg_level) + "]" + _timestp + "[" + str(msg) + "]\n";
+    file_object = open(fp_log, 'a');
+    file_object.write(_msg);
+    file_object.close();
+
     return(True);
 
 ##get_pidlst

@@ -2,9 +2,9 @@
 ## Crontab.Py
 ## the main crontab run function
 ## Written By Kyle Chen
-## Version 201700310v1
+## Version 201700315v1
 ## Note:
-##  Fix log output bug and looks run better in Linux/Aix
+##  Fix Log Rotate Bug
 ###############################################################################
 #!/usr/bin/env python
 
@@ -487,7 +487,7 @@ def init():
     DEBUG_PRT=kglobal.get_gval("DEBUG_PRT",GLOBAL_CFG_FP);
     SLEEP_INTERVAL=kglobal.get_gval("SLEEP_INTERVAL",GLOBAL_CFG_FP);
     LOG_LEVEL=kglobal.get_gval("LOG_LEVEL",GLOBAL_CFG_FP);
-    LOG_LEVEL=kglobal.get_loglevel(LOG_LEVEL);
+    #LOG_LEVEL=kglobal.get_loglevel(LOG_LEVEL);
 
     ##write log file
     kglobal.log_msg(LOG_FP, LOG_LEVEL, kglobal.LOG_MSG_INFO, "Crontab Initialing");

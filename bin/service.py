@@ -2,9 +2,9 @@
 ## Service.Py
 ## the crontab service function
 ## Written By Kyle Chen
-## Version 201700310v1
+## Version 201700315v1
 ## Note:
-##  Fix log output bug and looks run better in Linux/Aix
+##  Fix Log Rotate Bug
 ###############################################################################
 #!/usr/bin/env python
 

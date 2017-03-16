@@ -1,6 +1,9 @@
 ##Crontab Service in Python README
 Dev Logs:
 
+20170315v1:
+        Fix Log Rotate Bugs.
+
 20170310v1:
         Fix log output bug and looks run better in Linux/Aix.
 
