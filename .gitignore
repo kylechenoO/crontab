@@ -1,0 +1,11 @@
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+migrations/
+.idea/
+log/
+lock/
