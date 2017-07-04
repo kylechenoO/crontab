@@ -29,7 +29,7 @@ class RunCmd(threading.Thread):
         self.MAX_RETRY = max_retry
         self.THREAD_DELAY = thread_delay
 
-	return(None)
+        return(None)
 
     ##threading run func
     def run(self):
@@ -102,22 +102,22 @@ class RunCmd(threading.Thread):
     ##subproc check
     def subproc_check(self):
 
-		count = 0
-		subproc_limits = self.SUBPROC_LIMITS
-		cmd = 'ps -elf'
-		process = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
-		out = process.stdout.read().strip("\r").strip("\n")
-		pattern = re.compile('(\ *%s)' % (self.cmd))
-		for line in re.finditer(pattern, str(out)):
-			count += 1
+        count = 0
+        subproc_limits = self.SUBPROC_LIMITS
+        cmd = 'ps -elf'
+        process = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
+        out = process.stdout.read().strip("\r").strip("\n")
+        pattern = re.compile('(\ *%s)' % (self.cmd))
+        for line in re.finditer(pattern, str(out)):
+            count += 1
 
-		self.logger.debug('[subproc_check][%s][count][%s]' % (self.cmd, count))
-		if count > subproc_limits:
-			return(False)
+        self.logger.debug('[subproc_check][%s][count][%s]' % (self.cmd, count))
+        if count > subproc_limits:
+            return(False)
 
-		return(True)
+        return(True)
 
     ##destructor function
     def __del__(self):
 
-	return(None)
+        return(None)
