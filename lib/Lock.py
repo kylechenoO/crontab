@@ -14,16 +14,19 @@ import subprocess
 class Lock:
 
     ##initial function
-    def __init__(self, pname, pid , lock_dir, lock_file, logger):
+    def __init__(self, pname, pid , \
+                    lock_dir, lock_file, logger):
 
 	self.logger = logger
 	self.pname = '.*python.* %s' %( pname )
 	self.lock_init(lock_dir, lock_file)
 
 	lock_save = str(self.lock_read(lock_file))
-	if (self.lock_get_process(self.pname, pid)) or (lock_save != '' and self.lock_check_pid(lock_save)):
+	if (self.lock_get_process(self.pname, pid)) \
+                or (lock_save != '' and self.lock_check_pid(lock_save)):
 	    logger.error('[%s][Already Running][%s]' %( pname, pid ))
 	    sys.exit(-1)
+
 	else:
 	    self.lock_write(lock_file, pid)
 
@@ -52,12 +55,18 @@ class Lock:
 		return(False)
 
 	    fp.close()
+
 	return(True)
 
     ##read lock
     def lock_read(self, lock_file):
 
-	fp = open(lock_file, 'r')
+	try:
+	    fp = open(lock_file, 'r')
+
+	except Exception, e:
+            self.logger('[%s]' %( e ))
+
 	lock_cont = fp.read()
 	fp.close()
 
@@ -66,7 +75,12 @@ class Lock:
     ##write lock
     def lock_write(self, lock_file, PID):
 
-	fp = open(lock_file, 'w')
+	try:
+	    fp = open(lock_file, 'w')
+
+	except Exception, e:
+            self.logger('[%s]' %( e ))
+
 	fp.write(str(PID))
 	fp.close()
 
@@ -75,7 +89,12 @@ class Lock:
     ##lock release
     def lock_release(self, lock_file):
 
-	fp = open(lock_file, 'w')
+	try:
+	    fp = open(lock_file, 'w')
+
+	except Exception, e:
+            self.logger('[%s]' %( e ))
+
 	fp.write('')
 	fp.close()
 
@@ -83,10 +102,11 @@ class Lock:
 
     ##lock check pid
     def lock_check_pid(self, PID):
-
+        
 	Flag = False
 	cmd = "ps -elf"
-	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
+	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, \
+                                    stderr = subprocess.PIPE, shell=True)
 	output = pslst.stdout.read()
 	pattern = re.compile('(\ *%s \ *)' % PID)
 
@@ -101,7 +121,8 @@ class Lock:
 
 	Flag = False
 	cmd = "ps -elf"
-	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
+	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, \
+                                    stderr = subprocess.PIPE, shell=True)
 	output = pslst.stdout.read()
 	pattern = re.compile(r'(%s)' % pname)
 
@@ -111,6 +132,7 @@ class Lock:
 		Flag = True
 
 	    break
+
 	return(Flag)
 
     ##destructor function

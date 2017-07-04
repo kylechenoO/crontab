@@ -17,7 +17,8 @@ import subprocess
 class RunCmd(threading.Thread):
 
     ##initial function
-    def __init__(self, logger, usr, cmd, thread_timeout, LOCK, subproc_limits, max_retry, thread_delay):
+    def __init__(self, logger, usr, cmd, thread_timeout, \
+                    LOCK, subproc_limits, max_retry, thread_delay):
 
         threading.Thread.__init__(self, name=cmd)
         self.logger = logger
@@ -34,6 +35,7 @@ class RunCmd(threading.Thread):
     ##threading run func
     def run(self):
 
+        #self.lock.acquire()
         cmd = self.cmd
         cmd=re.sub(r"\"","\\\"", cmd);
         cmd="su - " + self.usr + " -c \"" + cmd + "\"";
@@ -64,17 +66,20 @@ class RunCmd(threading.Thread):
         self.logger.debug('[RunCmd][thread_timeout][%s]' % (self.thread_timeout))
         start = datetime.datetime.now()
         self.logger.debug('[RunCmd][START][%s]' % (start))
-        process = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
+        process = subprocess.Popen(cmd, stdout = subprocess.PIPE, \
+                                        stderr = subprocess.PIPE, shell = True)
         pid = process.pid
         self.logger.debug("[%s][%s][%s]" % (pid, cmd, start))
         now = datetime.datetime.now()
 
         errflag = False
         while (process.poll() is None):
+
             time.sleep(0.001)
             now = datetime.datetime.now()
 
             if (now - start).seconds >= self.thread_timeout:
+
                 os.kill(pid, signal.SIGKILL)
                 self.logger.error("[%s][Time Out Error]" %(cmd))
                 errflag = True
@@ -85,6 +90,7 @@ class RunCmd(threading.Thread):
 
         if errflag:
 
+            #self.lock.release()
             return(False)
 
         else:
@@ -93,27 +99,28 @@ class RunCmd(threading.Thread):
             err = process.stderr.read().strip("\r").strip("\n")
             self.logger.info("[%s]%s" %(self.cmd, out))
             self.logger.info("[%s]%s" %(self.cmd, err))
+            #self.lock.release()
             return(True)
 
     ##subproc check
     def subproc_check(self):
 
-		count = 0
-		subproc_limits = self.SUBPROC_LIMITS
-		cmd = 'ps -elf'
-		process = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
-		out = process.stdout.read().strip("\r").strip("\n")
-		pattern = re.compile('(\ *%s)' % (self.cmd))
+        count = 0
+        subproc_limits = self.SUBPROC_LIMITS
+        cmd = 'ps -elf'
+        process = subprocess.Popen(cmd, stdout = subprocess.PIPE, \
+                                        stderr = subprocess.PIPE, shell = True)
+        out = process.stdout.read().strip("\r").strip("\n")
+        pattern = re.compile('(\ su - .* -c *%s)' % (self.cmd))
 
-		for line in re.finditer(pattern, str(out)):
-			count += 1
+        for line in re.finditer(pattern, str(out)):
+            count += 1
 
-		self.logger.debug('[subproc_check][%s][count][%s]' % (self.cmd, count))
+        self.logger.debug('[subproc_check][%s][count][%s]' % (self.cmd, count))
+        if count >= subproc_limits:
+            return(False)
 
-		if count > subproc_limits:
-			return(False)
-
-		return(True)
+	return(True)
 
     ##destructor function
     def __del__(self):

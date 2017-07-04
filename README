@@ -1,1 +1,1 @@
-python bin/CrontabService.py
+python bin/CrontabService.py --start

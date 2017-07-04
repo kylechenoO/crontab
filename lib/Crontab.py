@@ -20,7 +20,8 @@ LOCK = threading.Lock()
 class Crontab:
 
     ##initial function
-    def __init__(self, crontab_cfg_file, logger, max_threads, thread_timeout, subproc_limits, max_retry, thread_delay):
+    def __init__(self, crontab_cfg_file, logger, max_threads, \
+                    thread_timeout, subproc_limits, max_retry, thread_delay):
 
         self.logger = logger
         self.max_threads = max_threads
@@ -36,8 +37,11 @@ class Crontab:
 	for line in self.crontab_clst:
 	    self.logger.debug('[%s]' % (line))
 
-        (self.SEC_NOW, self.MIN_NOW, self.HOR_NOW, self.DAY_NOW, self.MON_NOW, self.WEK_NOW) = self.crontab_getsystime()
-        self.logger.debug("[%s-%s %s %s:%s:%s]" %(self.MON_NOW, self.DAY_NOW, self.WEK_NOW, self.HOR_NOW, self.MIN_NOW, self.SEC_NOW))
+        (self.SEC_NOW, self.MIN_NOW, \
+                self.HOR_NOW, self.DAY_NOW, \
+                self.MON_NOW, self.WEK_NOW) = self.crontab_getsystime()
+        self.logger.debug("[%s-%s %s %s:%s:%s]" %(self.MON_NOW, self.DAY_NOW, \
+                            self.WEK_NOW, self.HOR_NOW, self.MIN_NOW, self.SEC_NOW))
 
         self.cfg_counts = self.crontab_cfg2arr(self.crontab_clst)
         self.logger.debug('[cfg_counts][%s]' % (self.cfg_counts))
@@ -92,9 +96,11 @@ class Crontab:
 
         strn = str(num)
         if strn[:1].isdigit() or strn[:1] == '*':
+
             return(True)
 
         else:
+
             self.logger.debug('[%s is not digit]' % (num))
             return(False)
 
@@ -129,14 +135,16 @@ class Crontab:
                 continue
 
             if not (self.crontab_checktime(linedt[0]) and self.crontab_checktime(linedt_list[1]) \
-                    and self.crontab_checktime(linedt_list[2]) and self.crontab_checktime(linedt_list[3]) \
-                    and self.crontab_checktime(linedt_list[4]) and self.crontab_checktime(linedt_list[5]) \
-                    and self.crontab_checktime(linedt_list[6])):
+                        and self.crontab_checktime(linedt_list[2]) and self.crontab_checktime(linedt_list[3]) \
+                        and self.crontab_checktime(linedt_list[4]) and self.crontab_checktime(linedt_list[5]) \
+                        and self.crontab_checktime(linedt_list[6])):
                 continue
 
             ##MAX_THREADS break
             if linenum >= self.max_threads:
-                self.logger.error("[OUT OF MAX_THREADS]%s %s %s %s %s %s %s %s %s" % (linedt_list[0], linedt_list[1], linedt_list[2], linedt_list[3], linedt_list[4], linedt_list[5], linedt_list[6], linedt_list[7], linedt_list[8]))
+                self.logger.error("[OUT OF MAX_THREADS]%s %s %s %s %s %s %s %s %s" % (linedt_list[0], linedt_list[1], \
+                                    linedt_list[2], linedt_list[3], linedt_list[4], linedt_list[5], \
+                                    linedt_list[6], linedt_list[7], linedt_list[8]))
                 continue
 
             ##split and append to list
@@ -169,32 +177,31 @@ class Crontab:
     ##compare time func
     def crontab_timecmp(self, time_set, time_now):
 
-        time_set = re.sub(r",+$","",time_set);
-        time_lst = [time_set];
-        lstsize = 1;
+        time_set = re.sub(r",+$","",time_set)
+        time_lst = [time_set]
+        lstsize = 1
 
         ##check multi pattern
-        split_pattern = re.compile(r"(,)");
-        flag_split = split_pattern.findall(time_set);
-        size_split = len(flag_split);
+        split_pattern = re.compile(r"(,)")
+        flag_split = split_pattern.findall(time_set)
+        size_split = len(flag_split)
 
         ##get multi pattern size
         if size_split >= 1:
-            time_lst = time_set.split(",");
-            lstsize = len(time_lst);
+            time_lst = time_set.split(",")
+            lstsize = len(time_lst)
 
         ##check time and run
-        i = 0;
+        i = 0
         while i < lstsize:
 
             ##if is now or "*" just return True, if not return False
             if (str(time_lst[i]) == str(int(time_now))) or (time_lst[i] == "*"):
-                return True;
-
-            i += 1;
+                return True
+            i += 1
 
         ##return value
-        return False;
+        return False
 
     ##Run CMD
     def run(self):
@@ -210,11 +217,14 @@ class Crontab:
                 if self.TIM_OUT[line] == '*' :
                     self.TIM_OUT[line] = self.thread_timeout
 
-                thread = RunCmd(self.logger, self.USR_LST[line], self.COM_LST[line], int(self.TIM_OUT[line]), self.LOCK, int(self.SUBPROC_LIMITS), int(self.MAX_RETRY), int(self.THREAD_DELAY))
+                thread = RunCmd(self.logger, self.USR_LST[line], \
+                                    self.COM_LST[line], int(self.TIM_OUT[line]), \
+                                    self.LOCK, int(self.SUBPROC_LIMITS), int(self.MAX_RETRY), int(self.THREAD_DELAY))
                 thread.start()
                 threads.append(thread)
 
             line += 1
+
 	return(None)
 
     ##destructor function

@@ -47,7 +47,8 @@ class CrontabService:
 	self.logger_init()
 
 	##lock initial
-	self.lockObj = Lock(self.pname, self.pid, self.config.LOCK_DIR, self.config.LOCK_FILE, self.logger)
+	self.lockObj = Lock(self.pname, self.pid, \
+                                self.config.LOCK_DIR, self.config.LOCK_FILE, self.logger)
 
 	##debug output
 	self.logger.debug('Crontab Initial')
@@ -73,18 +74,22 @@ class CrontabService:
 
         try:
             log_level = getattr(logging, self.config.LOG_LEVEL)
-
         except:
             log_level = logging.NOTSET
 
         self.logger.setLevel(log_level)
-        fh = RotatingFileHandler(self.config.LOG_FILE, mode='a', maxBytes=self.config.LOG_MAX_SIZE, backupCount=self.config.LOG_BACKUP_COUNT)
+
+        fh = RotatingFileHandler(self.config.LOG_FILE, mode='a', \
+                                    maxBytes=self.config.LOG_MAX_SIZE, backupCount=self.config.LOG_BACKUP_COUNT)
         fh.setLevel(log_level)
+
         ch = logging.StreamHandler()
         ch.setLevel(log_level)
+
         formatter = logging.Formatter('[%(asctime)s][%(name)s][%(levelname)s] %(message)s')
         fh.setFormatter(formatter)
         ch.setFormatter(formatter)
+
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
@@ -96,7 +101,9 @@ class CrontabService:
         while True:
 
 	    ##crontab initial
-	    self.crontabObj = Crontab(self.config.CRONTAB_CFG_FILE, self.logger, self.config.MAX_THREADS, self.config.THREAD_TIMEOUT, self.config.SUBPROC_LIMITS, self.config.MAX_RETRY, self.config.THREAD_DELAY)
+	    self.crontabObj = Crontab(self.config.CRONTAB_CFG_FILE, self.logger, \
+                                        self.config.MAX_THREADS, self.config.THREAD_TIMEOUT, \
+                                        self.config.SUBPROC_LIMITS, self.config.MAX_RETRY, self.config.THREAD_DELAY)
 	    self.crontabObj.run()
             time.sleep(self.config.SERVICE_INTERVAL)
 
@@ -108,7 +115,6 @@ class CrontabService:
 	##lock release
 	try:
 	    self.lockObj.lock_release(self.config.LOCK_FILE)
-
 	except Exception, e:
 	    pass
 
