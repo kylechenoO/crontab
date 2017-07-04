@@ -32,9 +32,9 @@ class Crontab:
 
         self.logger.debug("[MAX_THREADS][%s]" % (self.max_threads))
 
-	self.crontab_clst = self.crontab_readcfg(crontab_cfg_file)
-	for line in self.crontab_clst:
-	    self.logger.debug('[%s]' % (line))
+        self.crontab_clst = self.crontab_readcfg(crontab_cfg_file)
+        for line in self.crontab_clst:
+            self.logger.debug('[%s]' % (line))
 
         (self.SEC_NOW, self.MIN_NOW, self.HOR_NOW, self.DAY_NOW, self.MON_NOW, self.WEK_NOW) = self.crontab_getsystime()
         self.logger.debug("[%s-%s %s %s:%s:%s]" %(self.MON_NOW, self.DAY_NOW, self.WEK_NOW, self.HOR_NOW, self.MIN_NOW, self.SEC_NOW))
@@ -42,39 +42,39 @@ class Crontab:
         self.cfg_counts = self.crontab_cfg2arr(self.crontab_clst)
         self.logger.debug('[cfg_counts][%s]' % (self.cfg_counts))
 
-	return(None)
+        return(None)
 
     ##read crontab.cfg
     def crontab_readcfg(self, crontab_cfg_file):
 
-	crontab_content=self.crontab_read_file(crontab_cfg_file)
-	crontab_clst=crontab_content.split("\n")
-	crontab_clst.remove("")
+        crontab_content=self.crontab_read_file(crontab_cfg_file)
+        crontab_clst=crontab_content.split("\n")
+        crontab_clst.remove("")
 
-	return(crontab_clst)
+        return(crontab_clst)
 
     ##read_file func
     def crontab_read_file(self, file_name):
 
-	result=""
-	flag=""
-	size=""
+        result=""
+        flag=""
+        size=""
 
-	com_pattern=re.compile("^#")
-	fp=open(file_name)
+        com_pattern=re.compile("^#")
+        fp=open(file_name)
 
-	while True:
-	    line=fp.readline()
-	    flag=com_pattern.findall(line)
-	    size=len(flag)
-	    if size > 0:
-		continue
-	    if not line:
-		break
-	    result+=line
+        while True:
+            line=fp.readline()
+            flag=com_pattern.findall(line)
+            size=len(flag)
+            if size > 0:
+                continue
+            if not line:
+                break
+            result+=line
 
-	fp.close()
-	return(result)
+        fp.close()
+        return(result)
 
     ##getsystime and return
     def crontab_getsystime(self):
@@ -129,9 +129,9 @@ class Crontab:
                 continue
 
             if not (self.crontab_checktime(linedt[0]) and self.crontab_checktime(linedt_list[1]) \
-                    and self.crontab_checktime(linedt_list[2]) and self.crontab_checktime(linedt_list[3]) \
-                    and self.crontab_checktime(linedt_list[4]) and self.crontab_checktime(linedt_list[5]) \
-                    and self.crontab_checktime(linedt_list[6])):
+                            and self.crontab_checktime(linedt_list[2]) and self.crontab_checktime(linedt_list[3]) \
+                            and self.crontab_checktime(linedt_list[4]) and self.crontab_checktime(linedt_list[5]) \
+                            and self.crontab_checktime(linedt_list[6])):
                 continue
 
             ##MAX_THREADS break
@@ -218,9 +218,9 @@ class Crontab:
 
             line += 1
 
-	return(None)
+        return(None)
 
     ##destructor function
     def __del__(self):
 
-	return(None)
+        return(None)
