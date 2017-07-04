@@ -67,10 +67,13 @@ class Crontab:
 	    line=fp.readline()
 	    flag=com_pattern.findall(line)
 	    size=len(flag)
+
 	    if size > 0:
 		continue
+
 	    if not line:
 		break
+
 	    result+=line
 
 	fp.close()
@@ -89,12 +92,9 @@ class Crontab:
 
         strn = str(num)
         if strn[:1].isdigit() or strn[:1] == '*':
-
-            #self.logger.debug('[%s is digit]' % (num))
             return(True)
 
         else:
-
             self.logger.debug('[%s is not digit]' % (num))
             return(False)
 
@@ -150,8 +150,6 @@ class Crontab:
             self.USR_LST.append(linedt_list[7])
             self.COM_LST.append(linedt_list[8])
 
-            #self.logger.debug('[%s %s %s %s %s %s %s %s]' % (linedt_list[0], linedt_list[1], linedt_list[2], linedt_list[3], linedt_list[4], linedt_list[5], linedt_list[6], linedt_list[7]))
-
             ##if the CMD field is only one command, just continue
             if linesize == 9:
                 linenum += 1
@@ -188,9 +186,11 @@ class Crontab:
         ##check time and run
         i = 0;
         while i < lstsize:
+
             ##if is now or "*" just return True, if not return False
             if (str(time_lst[i]) == str(int(time_now))) or (time_lst[i] == "*"):
                 return True;
+
             i += 1;
 
         ##return value
@@ -207,8 +207,6 @@ class Crontab:
                     and (self.crontab_timecmp(self.HOR_LST[line], self.HOR_NOW)) and (self.crontab_timecmp(self.DAY_LST[line], self.DAY_NOW)) \
                     and (self.crontab_timecmp(self.MON_LST[line], self.MON_NOW)) and (self.crontab_timecmp(self.WEK_LST[line], self.WEK_NOW)):
 
-                #thread = RunCmd(self.logger, self.COM_LST[line], self.thread_timeout, self.LOCK)
-
                 if self.TIM_OUT[line] == '*' :
                     self.TIM_OUT[line] = self.thread_timeout
 
@@ -217,7 +215,6 @@ class Crontab:
                 threads.append(thread)
 
             line += 1
-
 	return(None)
 
     ##destructor function

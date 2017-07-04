@@ -34,7 +34,6 @@ class RunCmd(threading.Thread):
     ##threading run func
     def run(self):
 
-        #self.lock.acquire()
         cmd = self.cmd
         cmd=re.sub(r"\"","\\\"", cmd);
         cmd="su - " + self.usr + " -c \"" + cmd + "\"";
@@ -44,13 +43,16 @@ class RunCmd(threading.Thread):
 
         i = 1
         if not subproc_flag:
+
             while i <= self.MAX_RETRY:
                 time.sleep(self.THREAD_DELAY)
                 self.logger.error('[subproc][%s][Retry][%s]' % (cmd, i))
                 subproc_flag = self.subproc_check()
+
                 if not subproc_flag:
                     i += 1
                     continue
+
                 else:
                     subproc_flag = True
                     break
@@ -69,14 +71,10 @@ class RunCmd(threading.Thread):
 
         errflag = False
         while (process.poll() is None):
-
             time.sleep(0.001)
             now = datetime.datetime.now()
-            #self.logger.debug('[RunCmd][Running][%s]' % (now))
-            #print (now - start).seconds
 
             if (now - start).seconds >= self.thread_timeout:
-
                 os.kill(pid, signal.SIGKILL)
                 self.logger.error("[%s][Time Out Error]" %(cmd))
                 errflag = True
@@ -87,7 +85,6 @@ class RunCmd(threading.Thread):
 
         if errflag:
 
-            #self.lock.release()
             return(False)
 
         else:
@@ -96,7 +93,6 @@ class RunCmd(threading.Thread):
             err = process.stderr.read().strip("\r").strip("\n")
             self.logger.info("[%s]%s" %(self.cmd, out))
             self.logger.info("[%s]%s" %(self.cmd, err))
-            #self.lock.release()
             return(True)
 
     ##subproc check
@@ -108,10 +104,12 @@ class RunCmd(threading.Thread):
 		process = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
 		out = process.stdout.read().strip("\r").strip("\n")
 		pattern = re.compile('(\ *%s)' % (self.cmd))
+
 		for line in re.finditer(pattern, str(out)):
 			count += 1
 
 		self.logger.debug('[subproc_check][%s][count][%s]' % (self.cmd, count))
+
 		if count > subproc_limits:
 			return(False)
 

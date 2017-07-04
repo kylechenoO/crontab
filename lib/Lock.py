@@ -34,20 +34,24 @@ class Lock:
 
 	lock_dir = os.path.dirname(lock_file)
 	if not os.path.isdir(lock_dir):
+
 	    try:
 		os.mkdir(lock_dir)
+
 	    except Exception, e:
 		self.logger('[%s]' %( e ))
 		return(False)
 
 	if not os.path.isfile(lock_file):
+
 	    try:
 		fp = open(lock_file, 'w')
+
 	    except Exception, e:
 		self.logger('[%s]' %( e ))
 		return(False)
-	    fp.close()
 
+	    fp.close()
 	return(True)
 
     ##read lock
@@ -56,6 +60,7 @@ class Lock:
 	fp = open(lock_file, 'r')
 	lock_cont = fp.read()
 	fp.close()
+
 	return(lock_cont)
 
     ##write lock
@@ -64,6 +69,7 @@ class Lock:
 	fp = open(lock_file, 'w')
 	fp.write(str(PID))
 	fp.close()
+
 	return(True)
 
     ##lock release
@@ -72,6 +78,7 @@ class Lock:
 	fp = open(lock_file, 'w')
 	fp.write('')
 	fp.close()
+
 	return(True)
 
     ##lock check pid
@@ -82,10 +89,11 @@ class Lock:
 	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
 	output = pslst.stdout.read()
 	pattern = re.compile('(\ *%s \ *)' % PID)
+
 	for line in re.finditer(pattern, str(output)):
-	    #print line.group()
 	    Flag = True
 	    break
+
 	return(Flag)
 
     ##lock check process
@@ -96,12 +104,13 @@ class Lock:
 	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
 	output = pslst.stdout.read()
 	pattern = re.compile(r'(%s)' % pname)
-	for line in re.finditer(pattern, str(output)):
-	    if str(pid) not in str(line.group()):
-		#print('%s' % ( line.group() ))
-		Flag = True
-	    break
 
+	for line in re.finditer(pattern, str(output)):
+
+	    if str(pid) not in str(line.group()):
+		Flag = True
+
+	    break
 	return(Flag)
 
     ##destructor function

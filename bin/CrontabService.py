@@ -44,7 +44,6 @@ class CrontabService:
 	self.pname = 'CrontabService.py'
 
 	##logger initial
-	#self.logger_init(self.config.LOG_LEVEL, self.config.LOG_MAX_SIZE, self.config.LOG_BACKUP_COUNT, self.config.LOG_FILE)
 	self.logger_init()
 
 	##lock initial
@@ -65,9 +64,6 @@ class CrontabService:
 	self.logger.debug('[LOG_MAX_SIZE][%s]' %(self.config.LOG_MAX_SIZE))
 	self.logger.debug('[LOG_BACKUP_COUNT][%s]' %(self.config.LOG_BACKUP_COUNT))
 
-	##crontab initial
-	#self.crontabObj = Crontab(self.config.CRONTAB_CFG_FILE, self.logger, self.config.MAX_THREADS, self.config.THREAD_TIMEOUT)
-
 	return(None)
 
     ##initial logger
@@ -77,21 +73,18 @@ class CrontabService:
 
         try:
             log_level = getattr(logging, self.config.LOG_LEVEL)
+
         except:
             log_level = logging.NOTSET
 
         self.logger.setLevel(log_level)
-
         fh = RotatingFileHandler(self.config.LOG_FILE, mode='a', maxBytes=self.config.LOG_MAX_SIZE, backupCount=self.config.LOG_BACKUP_COUNT)
         fh.setLevel(log_level)
-
         ch = logging.StreamHandler()
         ch.setLevel(log_level)
-
         formatter = logging.Formatter('[%(asctime)s][%(name)s][%(levelname)s] %(message)s')
         fh.setFormatter(formatter)
         ch.setFormatter(formatter)
-
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
@@ -115,6 +108,7 @@ class CrontabService:
 	##lock release
 	try:
 	    self.lockObj.lock_release(self.config.LOCK_FILE)
+
 	except Exception, e:
 	    pass
 
