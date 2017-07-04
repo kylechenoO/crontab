@@ -73,7 +73,7 @@ class CrontabService:
     ##initial logger
     def logger_init(self):
 
-        self.logger = logging.getLogger("SACheck")
+        self.logger = logging.getLogger("Crontab")
 
         try:
             log_level = getattr(logging, self.config.LOG_LEVEL)

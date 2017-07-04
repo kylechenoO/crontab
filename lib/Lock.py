@@ -76,6 +76,7 @@ class Lock:
 
     ##lock check pid
     def lock_check_pid(self, PID):
+
 	Flag = False
 	cmd = "ps -elf"
 	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
@@ -89,6 +90,7 @@ class Lock:
 
     ##lock check process
     def lock_get_process(self, pname, pid):
+
 	Flag = False
 	cmd = "ps -elf"
 	pslst = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
