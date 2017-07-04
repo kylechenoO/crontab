@@ -13,10 +13,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 ##get workpath
-workpath="";
-pathlst=re.split(r"\/", sys.path[0]);
-max_index=len(pathlst)-1;
-i=0;
+workpath=""
+pathlst=re.split(r"\/", sys.path[0])
+max_index=len(pathlst)-1
+i=0
 
 while i < max_index-1:
 	workpath+=pathlst[i] + "/";
