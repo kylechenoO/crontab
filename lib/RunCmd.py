@@ -4,7 +4,7 @@
     Version 20170628v1
 '''
 
-##import buildin pkgs
+# import buildin pkgs
 import os
 import re
 import time
@@ -13,12 +13,14 @@ import datetime
 import threading
 import subprocess
 
-##RunCmd Class
+# RunCmd Class
+
+
 class RunCmd(threading.Thread):
 
-    ##initial function
-    def __init__(self, logger, usr, cmd, thread_timeout, \
-                    LOCK, subproc_limits, max_retry, thread_delay):
+    # initial function
+    def __init__(self, logger, usr, cmd, thread_timeout,
+                 LOCK, subproc_limits, max_retry, thread_delay):
 
         threading.Thread.__init__(self, name=cmd)
         self.logger = logger
@@ -30,15 +32,15 @@ class RunCmd(threading.Thread):
         self.MAX_RETRY = max_retry
         self.THREAD_DELAY = thread_delay
 
-	return(None)
+        return(None)
 
-    ##threading run func
+    # threading run func
     def run(self):
 
-        #self.lock.acquire()
+        # self.lock.acquire()
         cmd = self.cmd
-        cmd=re.sub(r"\"","\\\"", cmd);
-        cmd="su - " + self.usr + " -c \"" + cmd + "\"";
+        cmd = re.sub(r"\"", "\\\"", cmd)
+        cmd = "su - " + self.usr + " -c \"" + cmd + "\""
 
         timeout = self.thread_timeout
         subproc_flag = self.subproc_check()
@@ -63,11 +65,13 @@ class RunCmd(threading.Thread):
             self.logger.error('[subproc_check][%s][Still Running]' % (cmd))
             return(False)
 
-        self.logger.debug('[RunCmd][thread_timeout][%s]' % (self.thread_timeout))
+        self.logger.debug(
+            '[RunCmd][thread_timeout][%s]' %
+            (self.thread_timeout))
         start = datetime.datetime.now()
         self.logger.debug('[RunCmd][START][%s]' % (start))
-        process = subprocess.Popen(cmd, stdout = subprocess.PIPE, \
-                                        stderr = subprocess.PIPE, shell = True)
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, shell=True)
         pid = process.pid
         self.logger.debug("[%s][%s][%s]" % (pid, cmd, start))
         now = datetime.datetime.now()
@@ -81,7 +85,7 @@ class RunCmd(threading.Thread):
             if (now - start).seconds >= self.thread_timeout:
 
                 os.kill(pid, signal.SIGKILL)
-                self.logger.error("[%s][Time Out Error]" %(cmd))
+                self.logger.error("[%s][Time Out Error]" % (cmd))
                 errflag = True
                 break
 
@@ -90,26 +94,26 @@ class RunCmd(threading.Thread):
 
         if errflag:
 
-            #self.lock.release()
+            # self.lock.release()
             return(False)
 
         else:
 
             out = process.stdout.read().strip("\r").strip("\n")
             err = process.stderr.read().strip("\r").strip("\n")
-            self.logger.info("[%s]%s" %(self.cmd, out))
-            self.logger.info("[%s]%s" %(self.cmd, err))
-            #self.lock.release()
+            self.logger.info("[%s]%s" % (self.cmd, out))
+            self.logger.info("[%s]%s" % (self.cmd, err))
+            # self.lock.release()
             return(True)
 
-    ##subproc check
+    # subproc check
     def subproc_check(self):
 
         count = 0
         subproc_limits = self.SUBPROC_LIMITS
         cmd = 'ps -elf'
-        process = subprocess.Popen(cmd, stdout = subprocess.PIPE, \
-                                        stderr = subprocess.PIPE, shell = True)
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, shell=True)
         out = process.stdout.read().strip("\r").strip("\n")
         pattern = re.compile('(\ su - .* -c *%s)' % (self.cmd))
 
@@ -120,9 +124,9 @@ class RunCmd(threading.Thread):
         if count >= subproc_limits:
             return(False)
 
-	return(True)
+        return(True)
 
-    ##destructor function
+    # destructor function
     def __del__(self):
 
-	return(None)
+        return(None)
